@@ -1,4 +1,7 @@
 //jshint esversion:6
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -13,11 +16,14 @@ app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
+const url = process.env.MONGOLAB_URI;
 
 async function main() {
-  await mongoose.connect('mongodb+srv://cpmastrocinque:peShXMq1LegMgRbk@cluster0.ghm6g.mongodb.net/todolistDB');
+  const user = process.env.DB_USERNAME;
+  const password = process.env.DB_PASSWORD;
+  await mongoose.connect("mongodb+srv://" + user + ":" + password + "@cluster0.ghm6g.mongodb.net/todolistDB");
 }
-
+// /'mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ghm6g.${process.env.DB_HOST}/todolistDB'
 const itemsSchema = new mongoose.Schema ({
 	name: String
 });
